@@ -1,6 +1,5 @@
 package org.example.security_app.servcies;
 
-import jakarta.validation.constraints.Size;
 import org.example.security_app.models.Person;
 import org.example.security_app.repositories.PeopleRepository;
 import org.example.security_app.security.PersonDetails;

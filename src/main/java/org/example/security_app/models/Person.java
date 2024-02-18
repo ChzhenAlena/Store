@@ -17,10 +17,10 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotEmpty(message = "Username shouldn`t be empty")
-    @Size(min = 6, max = 30, message = "Username should be 6-30 characters long")
+    @Size(min = 4, max = 30, message = "Username should be 4-30 characters long")
     private String username;
     @NotEmpty(message = "Password shouldn`t be empty")
-    @Size(min = 6, max = 30, message = "Password should be 6-30 characters long")
+    @Size(min = 4, message = "Password should be 4+ characters long")
     private String password;
     @Column(name = "year_of_birth")
     @Min(value = 1900, message = "Year of birth should be more than 1900")

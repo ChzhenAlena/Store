@@ -9,4 +9,8 @@ public class FirstController {
     public String sayHello(){
         return "hello";
     }
+    @GetMapping("/admin")
+    public String adminPage(){
+        return "admin";
+    }
 }

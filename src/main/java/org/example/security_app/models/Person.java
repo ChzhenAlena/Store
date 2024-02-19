@@ -25,4 +25,5 @@ public class Person {
     @Column(name = "year_of_birth")
     @Min(value = 1900, message = "Year of birth should be more than 1900")
     private int yearOfBirth;
+    private String role;
 }

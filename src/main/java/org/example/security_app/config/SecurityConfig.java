@@ -27,10 +27,10 @@ public class SecurityConfig{
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                 httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/admin").hasRole("ADMIN")
+/*                        .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/auth/register", "/error").permitAll()
-                        //.requestMatchers("/hello").authenticated()
-                        .anyRequest().hasAnyRole("USER", "ADMIN")
+                        .anyRequest().hasAnyRole("USER", "ADMIN")*/
+                                .anyRequest().permitAll()
                 )
                 .formLogin(formlogin -> formlogin
                         .defaultSuccessUrl("/hello")

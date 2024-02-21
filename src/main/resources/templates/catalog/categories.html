@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalog</title>
+</head>
+<body>
+<h1>Welcome to catalog!</h1>
+<div th:each="category : ${categories}">
+    <a th:href="@{/catalog/{category}(category=${category})}" th:text="${category}">category</a>
+</div>
+</body>
+</html>

@@ -10,8 +10,7 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @Enumerated(EnumType.STRING)
     private ItemCategory category;
     @Min(value = 2, message = "Item name should be at least 2 characters long")
     private String name;

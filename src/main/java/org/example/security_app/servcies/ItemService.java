@@ -6,6 +6,7 @@ import org.example.security_app.repositories.ItemRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -16,5 +17,8 @@ public class ItemService {
     }
     public List<Item> findByCategory(ItemCategory category){
         return itemRepository.findItemsByCategory(category);
+    }
+    public Optional<Item> findItem(int id){
+        return itemRepository.findById(id);
     }
 }

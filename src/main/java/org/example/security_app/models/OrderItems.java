@@ -16,4 +16,9 @@ public class OrderItems {
     private Item item;
     private int amount;
 
+    public OrderItems(Order order, Item item, int amount) {
+        this.order = order;
+        this.item = item;
+        this.amount = amount;
+    }
 }

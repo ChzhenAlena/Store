@@ -2,22 +2,25 @@ package org.example.security_app.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-public class OrderItems {
+@NoArgsConstructor
+@Table(name="orders_items")
+public class OrderItem {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "item_id", referencedColumnName = "id")
     private Item item;
     private int amount;
 
-    public OrderItems(Order order, Item item, int amount) {
-        this.order = order;
+    public OrderItem(Item item, int amount) {
         this.item = item;
         this.amount = amount;
     }

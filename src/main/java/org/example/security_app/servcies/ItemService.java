@@ -1,5 +1,6 @@
 package org.example.security_app.servcies;
 
+import jakarta.transaction.Transactional;
 import org.example.security_app.models.Item;
 import org.example.security_app.models.ItemCategory;
 import org.example.security_app.repositories.ItemRepository;
@@ -20,5 +21,11 @@ public class ItemService {
     }
     public Optional<Item> findItem(int id){
         return itemRepository.findById(id);
+    }
+    @Transactional
+    public void decreaseItemAmount(int id, int amount){
+        Item item = itemRepository.findById(id).get();
+        item.setAmount(item.getAmount()-amount);
+        itemRepository.save(item);
     }
 }

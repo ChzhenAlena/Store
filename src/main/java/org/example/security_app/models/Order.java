@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,11 +18,17 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person owner;
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItems> items;
+    private List<OrderItem> items;
     public Order(Person person, OrderStatus status){
         this.owner = person;
         this.status = status;
+        items = new ArrayList<>();
+    }
+    public void addItem(OrderItem item){
+        items.add(item);
+        item.setOrder(this);
     }
 }

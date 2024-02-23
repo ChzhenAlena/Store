@@ -35,9 +35,8 @@ public class CatalogController {
         return "/catalog/item";
     }
     @PostMapping("/{category}/{id}")
-    public String addItemToCart(@PathVariable("id") int id, @ModelAttribute("amount") int amount, Model model){
-        System.out.println(amount);
-        //orderService.addItem(id, amount);
+    public String addItemToCart(@PathVariable("id") int id, @ModelAttribute("amount") int amount){
+        orderService.addItem(id, amount);
         return "/catalog/added";
     }
 }

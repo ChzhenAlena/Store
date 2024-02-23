@@ -1,7 +1,8 @@
 package org.example.security_app.servcies;
 
+import jakarta.transaction.Transactional;
 import org.example.security_app.models.Order;
-import org.example.security_app.models.OrderItems;
+import org.example.security_app.models.OrderItem;
 import org.example.security_app.models.OrderStatus;
 import org.example.security_app.models.Person;
 import org.example.security_app.repositories.ItemRepository;
@@ -14,37 +15,59 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final OrderItemsRepository orderItemsRepository;
-    private final PeopleRepository peopleRepository;
-    private final ItemRepository itemRepository;
+    private final ItemService itemService;
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderItemsRepository orderItemsRepository, PeopleRepository peopleRepository, ItemRepository itemRepository) {
+    public OrderService(OrderRepository orderRepository, OrderItemsRepository orderItemsRepository, PeopleRepository peopleRepository, ItemRepository itemRepository, ItemService itemService) {
         this.orderRepository = orderRepository;
-        this.orderItemsRepository = orderItemsRepository;
-        this.peopleRepository = peopleRepository;
-        this.itemRepository = itemRepository;
+        this.itemService = itemService;
     }
-    public void addItem(int id, int amount){
-        Optional<Order> orderCheck = orderRepository.findOrderByStatus(OrderStatus.active);
-        Order order;
+    @Transactional
+    public void addItem(int itemId, int amount){
+        Person person = getPerson();
+        Order order = getOrCreateActiveOrder(person);
+        OrderItem newItem = new OrderItem(itemService.findItem(itemId).get(), amount);
+
+
+        List<OrderItem> items = order.getItems();
+        items.add(newItem);
+        order.setItems(items);
+        //order.addItem(newItem);
+        System.out.println("item is added");
+        //newItem.setOrder(order);
+
+        System.out.println(order.toString());
+        System.out.println(order.getId());
+        orderRepository.save(order);
+        itemService.decreaseItemAmount(itemId, amount);
+    }
+    public List<Order> getOrders(){
+        Person person = getPerson();
+        return orderRepository.findOrdersByOwner(person);
+    }
+    public Optional<Order> getOrder(int id){
+        return orderRepository.findById(id);
+    }
+    private Person getPerson(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
-        Person person = personDetails.getPerson();
+        return personDetails.getPerson();
+    }
+    private Order getOrCreateActiveOrder(Person person){
+        Optional<Order> orderCheck = orderRepository.findOrderByStatusAndOwner(OrderStatus.active, person);
+        Order order;
         if(orderCheck.isEmpty()){
             order = new Order(person, OrderStatus.active);
             orderRepository.save(order);
         }
         else
             order = orderCheck.get();
-        OrderItems orderItems = new OrderItems(order, itemRepository.findById(id).get(), amount);
-        order.getItems().add(orderItems);
-        orderRepository.save(order);
-        System.out.println("Order has been saved");
+        return order;
     }
 
 }

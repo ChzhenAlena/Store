@@ -5,10 +5,7 @@ import org.example.security_app.models.Order;
 import org.example.security_app.models.OrderItem;
 import org.example.security_app.models.OrderStatus;
 import org.example.security_app.models.Person;
-import org.example.security_app.repositories.ItemRepository;
-import org.example.security_app.repositories.OrderItemsRepository;
 import org.example.security_app.repositories.OrderRepository;
-import org.example.security_app.repositories.PeopleRepository;
 import org.example.security_app.security.PersonDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,7 +20,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ItemService itemService;
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderItemsRepository orderItemsRepository, PeopleRepository peopleRepository, ItemRepository itemRepository, ItemService itemService) {
+    public OrderService(OrderRepository orderRepository, ItemService itemService) {
         this.orderRepository = orderRepository;
         this.itemService = itemService;
     }
@@ -32,17 +29,7 @@ public class OrderService {
         Person person = getPerson();
         Order order = getOrCreateActiveOrder(person);
         OrderItem newItem = new OrderItem(itemService.findItem(itemId).get(), amount);
-
-
-        List<OrderItem> items = order.getItems();
-        items.add(newItem);
-        order.setItems(items);
-        //order.addItem(newItem);
-        System.out.println("item is added");
-        //newItem.setOrder(order);
-
-        System.out.println(order.toString());
-        System.out.println(order.getId());
+        order.addItem(newItem);
         orderRepository.save(order);
         itemService.decreaseItemAmount(itemId, amount);
     }

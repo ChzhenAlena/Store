@@ -1,5 +1,7 @@
 package org.example.security_app.controllers;
 
+import jakarta.validation.Valid;
+import org.example.security_app.models.Item;
 import org.example.security_app.models.ItemCategory;
 import org.example.security_app.models.OrderStatus;
 import org.example.security_app.services.ItemService;
@@ -8,6 +10,7 @@ import org.example.security_app.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -78,5 +81,17 @@ public class AdminController {
         model.addAttribute("items", itemService.findByCategory(ItemCategory.valueOf(category)));
         model.addAttribute("category", category);
         return "admin/items";
+    }
+    @GetMapping("/categories/{category}/add")
+    public String newItem(@PathVariable("category") String category, Model model){
+        model.addAttribute("item", new Item(ItemCategory.valueOf(category)));
+        return "admin/addItem";
+    }
+    @PostMapping("/categories/{category}")
+    public String createItem(@ModelAttribute("item") @Valid Item item, BindingResult bindingResult){
+        if(bindingResult.hasErrors())
+            return "admin/addItem";
+        itemService.save(item);
+        return "redirect:/admin/categories/{category}";
     }
 }

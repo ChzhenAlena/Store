@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add item</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/admin/categories/{category}(category=${category})}" th:object="${item}">
+    <label for="name">Enter name: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+    <br/>
+    <label for="amount">Enter amount: </label>
+    <input type="number" th:min="0" th:max="2147483647" th:field="*{amount}" id="amount"/>
+    <div style="color:red" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Age error</div>
+    <br/>
+    <input type="submit" value="Create"/>
+</form>
+</body>
+</html>

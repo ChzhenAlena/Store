@@ -5,6 +5,7 @@
     <title>Items</title>
 </head>
 <body>
+<a th:href="@{/admin/categories/{category}/add(category=${category})}">Add item</a>
 <div th:each="item : ${items}">
     <h3 th:text="${item.getName()}">item</h3>
     <img th:src="@{/images/{id}.jpg(id=${item.getId()})}" alt="image" width="120"/>

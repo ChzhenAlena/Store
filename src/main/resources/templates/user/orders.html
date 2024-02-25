@@ -5,9 +5,25 @@
     <title>Orders</title>
 </head>
 <body>
-Orders
-<div th:each="order : ${orders}">
-    <a th:href="@{/templates/user/{id}(id=${order.getId})}" th:text="${order.getId()} + ${order.getStatus()} + ${order.getItems()}">order</a>
+<div th:each="order : ${processingOrders}">
+    <p th:text="'Id: ' + ${order.getId()} + ', status: ' + ${order.getStatus()}"/>
+    <div th:each="item : ${order.getItems()}">
+        <p th:text="${item.getItem().getName()} + ', amount: ' + ${item.getAmount()}"/>
+    </div>
+    <form th:method="delete" th:action="@{/user/orders/{id}(id=${order.getId()})}">
+        <input type="submit" value="Delete">
+    </form>
+    <hr/>
+    <br/>
+</div>
+<div th:each="order : ${doneOrders}">
+    <p th:text="'Id: ' + ${order.getId()} + ', status: ' + ${order.getStatus()}"/>
+    <div th:each="item : ${order.getItems()}">
+        <p th:text="${item.getItem().getName()} + ', amount: ' + ${item.getAmount()}"/>
+    </div>
+    <hr/>
+    <br/>
 </div>
 </body>
 </html>
+

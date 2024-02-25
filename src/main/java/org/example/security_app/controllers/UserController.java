@@ -1,5 +1,6 @@
 package org.example.security_app.controllers;
 
+import org.example.security_app.models.OrderStatus;
 import org.example.security_app.servcies.OrderItemService;
 import org.example.security_app.servcies.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,15 @@ public class UserController {
     }
     @GetMapping("/orders")
     public String showOrders(Model model){
-        System.out.println("orders");
-        model.addAttribute("orders", orderService.getOrders());
+        model.addAttribute("processingOrders", orderService.getOrdersByStatus(OrderStatus.processing));
+        model.addAttribute("doneOrders", orderService.getOrdersByStatus(OrderStatus.done));
         return "user/orders";
     }
-    @GetMapping("/orders/{id}")
-    public String showOrder(@PathVariable("id") int id, Model model){
-        model.addAttribute("order", orderService.getOrder(id).get());
-        return "user/order";
+    @PostMapping("/orders/{id}")
+    public String cancelOrder(@PathVariable("id") int id, Model model){
+        orderService.deleteOrder(id);
+        model.addAttribute("processingOrders", orderService.getOrdersByStatus(OrderStatus.processing));
+        model.addAttribute("doneOrders", orderService.getOrdersByStatus(OrderStatus.done));
+        return "user/orders";
     }
 }

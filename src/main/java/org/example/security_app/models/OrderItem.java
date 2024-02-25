@@ -1,10 +1,7 @@
 package org.example.security_app.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
@@ -27,4 +24,5 @@ public class OrderItem {
         this.item = item;
         this.amount = amount;
     }
+
 }

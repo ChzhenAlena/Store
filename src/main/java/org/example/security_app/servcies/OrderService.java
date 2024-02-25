@@ -28,7 +28,14 @@ public class OrderService {
     }
     @Transactional
     public void addItem(int itemId, int amount){
-        Order order = getOrCreateActiveOrder();
+        List<Order> orders = getOrdersByStatus(OrderStatus.active);
+        Order order;
+        if(orders.isEmpty()){
+            order = new Order(getPerson(), OrderStatus.active);
+            orderRepository.save(order);
+        }
+        else
+            order = orders.get(0);
         Optional<OrderItem> existingOrderItem= orderItemService.findExistingItem(order, itemService.findItem(itemId).get());
         OrderItem item;
         if(existingOrderItem.isEmpty()) {
@@ -43,10 +50,8 @@ public class OrderService {
         }
         itemService.decreaseItemAmount(itemId, amount);
     }
-    public List<Order> getOrders(){
-        Person person = getPerson();
-        System.out.println(orderRepository.findById(20).get());
-        return orderRepository.findOrdersByOwner(person);
+    public List<Order> getOrdersByStatus(OrderStatus status){
+        return orderRepository.findOrdersByStatusAndOwner(status, getPerson());
     }
     public Optional<Order> getOrder(int id){
         return orderRepository.findById(id);
@@ -56,26 +61,16 @@ public class OrderService {
         PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
         return personDetails.getPerson();
     }
-    private Order getOrCreateActiveOrder(){
-        Person person = getPerson();
-        Optional<Order> orderCheck = orderRepository.findOrderByStatusAndOwner(OrderStatus.active, person);
-        Order order;
-        if(orderCheck.isEmpty()){
-            order = new Order(person, OrderStatus.active);
-            orderRepository.save(order);
-        }
-        else
-            order = orderCheck.get();
-        return order;
-    }
     public List<OrderItem> getItemsFromActiveOrder(){
         Person person = getPerson();
-        Optional<Order> order = orderRepository.findOrderByStatusAndOwner(OrderStatus.active, person);
-        if(order.isEmpty())
+        List<Order> orders = orderRepository.findOrdersByStatusAndOwner(OrderStatus.active, person);
+        if(orders.isEmpty())
             return null;
         else
-            return order.get().getItems();
+            return orders.get(0).getItems();
     }
-
+    public void deleteOrder(int id){
+        orderRepository.delete(orderRepository.findById(id).get());
+    }
 
 }

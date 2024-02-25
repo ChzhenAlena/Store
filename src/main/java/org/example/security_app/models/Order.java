@@ -1,10 +1,10 @@
 package org.example.security_app.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @Table(name = "orders")
 public class Order {
@@ -34,4 +35,5 @@ public class Order {
         items.add(item);
         item.setOrder(this);
     }
+
 }

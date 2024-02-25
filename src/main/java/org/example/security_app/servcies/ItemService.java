@@ -28,4 +28,7 @@ public class ItemService {
         item.setAmount(item.getAmount()-amount);
         itemRepository.save(item);
     }
+    public void save(Item item){
+        itemRepository.save(item);
+    }
 }

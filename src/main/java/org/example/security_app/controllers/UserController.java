@@ -29,6 +29,12 @@ public class UserController {
         model.addAttribute("items", orderService.getItemsFromActiveOrder());
         return "user/cart";
     }
+    @PostMapping("/cart/{id}/edit")
+    public String changeItemAmountInCart(@PathVariable("id") int id, @RequestParam("amount") int amount, Model model){
+        orderItemService.changeItemAmount(id, amount);
+        model.addAttribute("items", orderService.getItemsFromActiveOrder());
+        return "user/cart";
+    }
     @GetMapping("/orders")
     public String showOrders(Model model){
         model.addAttribute("orders", orderService.getOrders());

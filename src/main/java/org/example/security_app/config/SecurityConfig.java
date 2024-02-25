@@ -37,7 +37,7 @@ public class SecurityConfig{
                                 /*.anyRequest().permitAll()*/
                 )
                 .formLogin(formlogin -> formlogin
-                        .defaultSuccessUrl("/hello")
+                        .defaultSuccessUrl("/catalog")
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout"));

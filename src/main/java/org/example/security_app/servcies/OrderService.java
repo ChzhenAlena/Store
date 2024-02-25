@@ -45,6 +45,7 @@ public class OrderService {
     }
     public List<Order> getOrders(){
         Person person = getPerson();
+        System.out.println(orderRepository.findById(20).get());
         return orderRepository.findOrdersByOwner(person);
     }
     public Optional<Order> getOrder(int id){

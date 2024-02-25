@@ -37,6 +37,7 @@ public class UserController {
     }
     @GetMapping("/orders")
     public String showOrders(Model model){
+        System.out.println("orders");
         model.addAttribute("orders", orderService.getOrders());
         return "user/orders";
     }

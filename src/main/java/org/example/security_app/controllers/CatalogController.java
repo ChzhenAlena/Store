@@ -5,10 +5,12 @@ import org.example.security_app.servcies.ItemService;
 import org.example.security_app.servcies.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/catalog")
+@Validated
 public class CatalogController {
     private final ItemService itemService;
     private final OrderService orderService;
@@ -35,7 +37,7 @@ public class CatalogController {
         return "/catalog/item";
     }
     @PostMapping("/{category}/{id}")
-    public String addItemToCart(@PathVariable("id") int id, @ModelAttribute("amount") int amount){
+    public String addItemToCart(@PathVariable("id") int id, @RequestParam("amount") int amount){
         orderService.addItem(id, amount);
         return "/catalog/added";
     }

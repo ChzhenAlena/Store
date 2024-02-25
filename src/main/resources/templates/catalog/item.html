@@ -9,7 +9,7 @@
 <img th:src="@{/images/{id}.jpg(id=${item.getId()})}" alt="image" width="150"/>
 <form method="POST" th:action="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory()})}">
     <label for="amount">Enter amount of item</label>
-    <input type="text" name="amount" id="amount" min="0" th:max="${item.getAmount()}">
+    <input type="number" name="amount" id="amount" th:min="1" th:max="${item.getAmount()}">
     <input type="submit" value="Add to cart"/>
 </form>
 </body>

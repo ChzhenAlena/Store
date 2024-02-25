@@ -19,18 +19,28 @@ import java.util.Optional;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final ItemService itemService;
+    private final OrderItemService orderItemService;
     @Autowired
-    public OrderService(OrderRepository orderRepository, ItemService itemService) {
+    public OrderService(OrderRepository orderRepository, ItemService itemService, OrderItemService orderItemService) {
         this.orderRepository = orderRepository;
         this.itemService = itemService;
+        this.orderItemService = orderItemService;
     }
     @Transactional
     public void addItem(int itemId, int amount){
-        Person person = getPerson();
-        Order order = getOrCreateActiveOrder(person);
-        OrderItem newItem = new OrderItem(itemService.findItem(itemId).get(), amount);
-        order.addItem(newItem);
-        orderRepository.save(order);
+        Order order = getOrCreateActiveOrder();
+        Optional<OrderItem> existingOrderItem= orderItemService.findExistingItem(order, itemService.findItem(itemId).get());
+        OrderItem item;
+        if(existingOrderItem.isEmpty()) {
+            item = new OrderItem(itemService.findItem(itemId).get(), amount);
+            order.addItem(item);
+            orderRepository.save(order);
+        }
+        else {
+            item = existingOrderItem.get();
+            item.setAmount(item.getAmount()+amount);
+            orderItemService.save(item);
+        }
         itemService.decreaseItemAmount(itemId, amount);
     }
     public List<Order> getOrders(){
@@ -45,7 +55,8 @@ public class OrderService {
         PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
         return personDetails.getPerson();
     }
-    private Order getOrCreateActiveOrder(Person person){
+    private Order getOrCreateActiveOrder(){
+        Person person = getPerson();
         Optional<Order> orderCheck = orderRepository.findOrderByStatusAndOwner(OrderStatus.active, person);
         Order order;
         if(orderCheck.isEmpty()){
@@ -56,5 +67,14 @@ public class OrderService {
             order = orderCheck.get();
         return order;
     }
+    public List<OrderItem> getItemsFromActiveOrder(){
+        Person person = getPerson();
+        Optional<Order> order = orderRepository.findOrderByStatusAndOwner(OrderStatus.active, person);
+        if(order.isEmpty())
+            return null;
+        else
+            return order.get().getItems();
+    }
+
 
 }

@@ -1,4 +1,4 @@
-package org.example.security_app.servcies;
+package org.example.security_app.services;
 
 import org.example.security_app.models.Person;
 import org.example.security_app.repositories.PeopleRepository;

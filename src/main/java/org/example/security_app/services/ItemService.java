@@ -1,4 +1,4 @@
-package org.example.security_app.servcies;
+package org.example.security_app.services;
 
 import jakarta.transaction.Transactional;
 import org.example.security_app.models.Item;

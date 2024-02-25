@@ -7,10 +7,12 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
+@ToString(exclude = {"password"})
 @NoArgsConstructor
 public class Person {
     @Id
@@ -26,4 +28,6 @@ public class Person {
     @Min(value = 1900, message = "Year of birth should be more than 1900")
     private int yearOfBirth;
     private String role;
+    @Column(name = "locked")
+    private boolean isLocked;
 }

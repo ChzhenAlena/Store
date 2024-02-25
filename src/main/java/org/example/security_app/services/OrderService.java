@@ -1,4 +1,4 @@
-package org.example.security_app.servcies;
+package org.example.security_app.services;
 
 import jakarta.transaction.Transactional;
 import org.example.security_app.models.Order;
@@ -53,6 +53,9 @@ public class OrderService {
     public List<Order> getOrdersByStatus(OrderStatus status){
         return orderRepository.findOrdersByStatusAndOwner(status, getPerson());
     }
+    public List<Order> getOrdersByStatusAndOwner(OrderStatus status, Person person){
+        return orderRepository.findOrdersByStatusAndOwner(status, person);
+    }
     public Optional<Order> getOrder(int id){
         return orderRepository.findById(id);
     }
@@ -71,6 +74,11 @@ public class OrderService {
     }
     public void deleteOrder(int id){
         orderRepository.delete(orderRepository.findById(id).get());
+    }
+    public void makeDone(int id){
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(OrderStatus.done);
+        orderRepository.save(order);
     }
 
 }

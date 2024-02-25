@@ -1,8 +1,8 @@
 package org.example.security_app.controllers;
 
 import org.example.security_app.models.ItemCategory;
-import org.example.security_app.servcies.ItemService;
-import org.example.security_app.servcies.OrderService;
+import org.example.security_app.services.ItemService;
+import org.example.security_app.services.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;

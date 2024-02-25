@@ -2,7 +2,7 @@ package org.example.security_app.controllers;
 
 import jakarta.validation.Valid;
 import org.example.security_app.models.Person;
-import org.example.security_app.servcies.RegistrationService;
+import org.example.security_app.services.RegistrationService;
 import org.example.security_app.util.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

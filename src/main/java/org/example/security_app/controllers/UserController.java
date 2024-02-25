@@ -1,8 +1,8 @@
 package org.example.security_app.controllers;
 
 import org.example.security_app.models.OrderStatus;
-import org.example.security_app.servcies.OrderItemService;
-import org.example.security_app.servcies.OrderService;
+import org.example.security_app.services.OrderItemService;
+import org.example.security_app.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,7 +1,7 @@
 package org.example.security_app.config;
 
 import org.example.security_app.repositories.PeopleRepository;
-import org.example.security_app.servcies.PersonDetailsService;
+import org.example.security_app.services.PersonDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,7 +31,7 @@ public class SecurityConfig{
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                 httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/auth/register", "/error").permitAll()
                         .anyRequest().hasAnyRole("USER", "ADMIN")
                                 /*.anyRequest().permitAll()*/

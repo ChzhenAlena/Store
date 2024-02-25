@@ -1,25 +1,26 @@
 package org.example.security_app.controllers;
 
+import org.example.security_app.models.ItemCategory;
 import org.example.security_app.models.OrderStatus;
+import org.example.security_app.services.ItemService;
 import org.example.security_app.services.OrderService;
 import org.example.security_app.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     private final PeopleService peopleService;
     private final OrderService orderService;
+    private final ItemService itemService;
     @Autowired
-    public AdminController(PeopleService peopleService, OrderService orderService) {
+    public AdminController(PeopleService peopleService, OrderService orderService, ItemService itemService) {
         this.peopleService = peopleService;
         this.orderService = orderService;
+        this.itemService = itemService;
     }
 
     @GetMapping("/users")
@@ -52,5 +53,30 @@ public class AdminController {
         model.addAttribute("processingOrders", orderService.getOrdersByStatusAndOwner(OrderStatus.processing, peopleService.findById(userId)));
         model.addAttribute("doneOrders", orderService.getOrdersByStatusAndOwner(OrderStatus.done, peopleService.findById(userId)));
         return "admin/orders";
+    }
+    @GetMapping("/categories")
+    public String showCategories(Model model){
+        model.addAttribute("categories", ItemCategory.values());
+        return "admin/categories";
+    }
+    @GetMapping("/categories/{category}")
+    public String showItems(@PathVariable("category") String category, Model model){
+        model.addAttribute("items", itemService.findByCategory(ItemCategory.valueOf(category)));
+        model.addAttribute("category", category);
+        return "admin/items";
+    }
+    @PostMapping("/categories/{category}/{id}")
+    public String changeItemAmount(@PathVariable("category") String category, @PathVariable("id") int id, @RequestParam("amount") int amount, Model model){
+        itemService.changeAmount(id, amount);
+        model.addAttribute("items", itemService.findByCategory(ItemCategory.valueOf(category)));
+        model.addAttribute("category", category);
+        return "admin/items";
+    }
+    @PostMapping("/categories/{category}/{id}/delete")
+    public String deleteItem(@PathVariable("category") String category, @PathVariable("id") int id, Model model){
+        itemService.deleteItem(id);
+        model.addAttribute("items", itemService.findByCategory(ItemCategory.valueOf(category)));
+        model.addAttribute("category", category);
+        return "admin/items";
     }
 }

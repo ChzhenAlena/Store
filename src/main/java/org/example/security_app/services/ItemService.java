@@ -31,4 +31,15 @@ public class ItemService {
     public void save(Item item){
         itemRepository.save(item);
     }
+    public List<Item> findItems(){
+        return itemRepository.findAll();
+    }
+    public void changeAmount(int id, int amount){
+        Item item = itemRepository.findById(id).get();
+        item.setAmount(amount);
+        itemRepository.save(item);
+    }
+    public void deleteItem(int id){
+        itemRepository.delete(itemRepository.findById(id).get());
+    }
 }

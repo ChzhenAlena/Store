@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+<body>
+<!--добавление категории?-->
+<div th:each="category : ${categories}">
+    <a th:href="@{/admin/categories/{category}(category=${category})}" th:text="${category}">category</a>
+</div>
+</body>
+</html>

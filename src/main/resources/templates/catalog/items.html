@@ -5,6 +5,7 @@
     <title>Catalog</title>
 </head>
 <body>
+<div th:insert="~{exit :: exit}"></div>
 <div th:each="item : ${items}">
     <a th:href="@{/catalog/{category}(category=${category})/{id}(id=${item.getId})}" th:text="${item.getName()}">item</a>
 </div>

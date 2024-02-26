@@ -5,6 +5,7 @@
     <title>Item</title>
 </head>
 <body>
+<div th:insert="~{exit :: exit}"></div>
 <h2 th:text="${item.getName()}"/>
 <img th:src="@{/images/{id}.jpg(id=${item.getId()})}" alt="image" width="150"/>
 <form method="POST" th:action="@{/catalog/{category}/{id}(id=${item.getId()}, category=${item.getCategory()})}">

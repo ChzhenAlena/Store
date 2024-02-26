@@ -5,7 +5,9 @@
     <title>Catalog</title>
 </head>
 <body>
+<div th:insert="~{exit :: exit}"></div>
 <h1>Welcome to catalog!</h1>
+<h3>Select category</h3>
 <div th:each="category : ${categories}">
     <a th:href="@{/catalog/{category}(category=${category})}" th:text="${category}">category</a>
 </div>

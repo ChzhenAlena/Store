@@ -5,6 +5,7 @@
     <title>Cart</title>
 </head>
 <body>
+<div th:insert="~{exit :: exit}"></div>
 <span th:if="${items.size()==0}" th:text="'Cart is empty!'"/>
 <div th:each="orderItem : ${items}">
     <p th:text="${orderItem.getItem().getName()} + ', amount: ' + ${orderItem.getAmount()}">item</p>

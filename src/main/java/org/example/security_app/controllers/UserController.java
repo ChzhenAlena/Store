@@ -18,6 +18,10 @@ public class UserController {
         this.orderService = orderService;
         this.orderItemService = orderItemService;
     }
+    @GetMapping
+    public String index(){
+        return "user/index";
+    }
 
     @GetMapping("/cart")
     public String showCart(Model model){

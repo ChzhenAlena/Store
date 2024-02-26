@@ -5,6 +5,7 @@
     <title>Items</title>
 </head>
 <body>
+<div th:insert="~{exit :: exit}"></div>
 <a th:href="@{/admin/categories/{category}/add(category=${category})}">Add item</a>
 <div th:each="item : ${items}">
     <h3 th:text="${item.getName()}">item</h3>
@@ -19,6 +20,8 @@
     <form th:method="DELETE" th:action="@{/admin/categories/{category}/{id}(category=${category}, id=${item.getId()})}">
         <input type="submit" value="Delete">
     </form>
+    <br/>
+    <a th:href="@{/admin/categories}">Go to categories</a>
 </div>
 </body>
 </html>

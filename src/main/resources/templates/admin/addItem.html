@@ -5,6 +5,7 @@
     <title>Add item</title>
 </head>
 <body>
+<div th:insert="~{exit :: exit}"></div>
 <form th:method="POST" th:action="@{/admin/categories/{category}(category=${category})}" th:object="${item}">
     <label for="name">Enter name: </label>
     <input type="text" th:field="*{name}" id="name"/>

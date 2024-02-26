@@ -25,7 +25,10 @@ public class AdminController {
         this.orderService = orderService;
         this.itemService = itemService;
     }
-
+    @GetMapping
+    public String index(){
+        return "admin/index";
+    }
     @GetMapping("/users")
     public String showUsers(Model model){
         model.addAttribute("users", peopleService.showPeople());
@@ -46,8 +49,6 @@ public class AdminController {
     @DeleteMapping("/users/{user_id}/orders/{order_id}")
     public String deleteUserOrder(@PathVariable("order_id") int orderId, Model model, @PathVariable("user_id") int userId){
         orderService.deleteOrder(orderId);
-        //model.addAttribute("processingOrders", orderService.getOrdersByStatusAndOwner(OrderStatus.processing, peopleService.findById(userId)));
-        //model.addAttribute("doneOrders", orderService.getOrdersByStatusAndOwner(OrderStatus.done, peopleService.findById(userId)));
         return "redirect:/users/{id}/orders";
     }
     @PostMapping("/users/{user_id}/orders/{order_id}")

@@ -5,6 +5,7 @@
     <title>Categories</title>
 </head>
 <body>
+<div th:insert="~{exit :: exit}"></div>
 <!--добавление категории?-->
 <div th:each="category : ${categories}">
     <a th:href="@{/admin/categories/{category}(category=${category})}" th:text="${category}">category</a>

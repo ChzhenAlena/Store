@@ -43,14 +43,14 @@ public class AdminController {
         model.addAttribute("doneOrders", orderService.getOrdersByStatusAndOwner(OrderStatus.done, peopleService.findById(id)));
         return "admin/orders";
     }
-    @PostMapping("/users/{user_id}/orders/{order_id}")
+    @DeleteMapping("/users/{user_id}/orders/{order_id}")
     public String deleteUserOrder(@PathVariable("order_id") int orderId, Model model, @PathVariable("user_id") int userId){
         orderService.deleteOrder(orderId);
-        model.addAttribute("processingOrders", orderService.getOrdersByStatusAndOwner(OrderStatus.processing, peopleService.findById(userId)));
-        model.addAttribute("doneOrders", orderService.getOrdersByStatusAndOwner(OrderStatus.done, peopleService.findById(userId)));
-        return "admin/orders";
+        //model.addAttribute("processingOrders", orderService.getOrdersByStatusAndOwner(OrderStatus.processing, peopleService.findById(userId)));
+        //model.addAttribute("doneOrders", orderService.getOrdersByStatusAndOwner(OrderStatus.done, peopleService.findById(userId)));
+        return "redirect:/users/{id}/orders";
     }
-    @PostMapping("/users/{user_id}/orders/{order_id}/edit")
+    @PostMapping("/users/{user_id}/orders/{order_id}")
     public String changeOrderStatus(@PathVariable("order_id") int orderId, Model model, @PathVariable("user_id") int userId){
         orderService.makeDone(orderId);
         model.addAttribute("processingOrders", orderService.getOrdersByStatusAndOwner(OrderStatus.processing, peopleService.findById(userId)));
@@ -75,12 +75,10 @@ public class AdminController {
         model.addAttribute("category", category);
         return "admin/items";
     }
-    @PostMapping("/categories/{category}/{id}/delete")
+    @DeleteMapping("/categories/{category}/{id}")
     public String deleteItem(@PathVariable("category") String category, @PathVariable("id") int id, Model model){
         itemService.deleteItem(id);
-        model.addAttribute("items", itemService.findByCategory(ItemCategory.valueOf(category)));
-        model.addAttribute("category", category);
-        return "admin/items";
+        return "redirect:/admin/categories/{category}";
     }
     @GetMapping("/categories/{category}/add")
     public String newItem(@PathVariable("category") String category, Model model){

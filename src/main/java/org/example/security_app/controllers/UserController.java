@@ -24,11 +24,11 @@ public class UserController {
         model.addAttribute("items", orderService.getItemsFromActiveOrder());
         return "user/cart";
     }
-    @PostMapping("/cart/{id}")
+    @DeleteMapping("/cart/{id}")
     public String deleteItemFromCart(@PathVariable("id") int id, Model model){
         orderItemService.deleteItem(id);
         model.addAttribute("items", orderService.getItemsFromActiveOrder());
-        return "user/cart";
+        return "redirect:/user/cart";
     }
     @PostMapping("/cart/{id}/edit")
     public String changeItemAmountInCart(@PathVariable("id") int id, @RequestParam("amount") int amount, Model model){
@@ -42,11 +42,9 @@ public class UserController {
         model.addAttribute("doneOrders", orderService.getOrdersByStatus(OrderStatus.done));
         return "user/orders";
     }
-    @PostMapping("/orders/{id}")
-    public String cancelOrder(@PathVariable("id") int id, Model model){
+    @DeleteMapping("/orders/{id}")
+    public String deleteOrder(@PathVariable("id") int id, Model model){
         orderService.deleteOrder(id);
-        model.addAttribute("processingOrders", orderService.getOrdersByStatus(OrderStatus.processing));
-        model.addAttribute("doneOrders", orderService.getOrdersByStatus(OrderStatus.done));
-        return "user/orders";
+        return "redirect:/user/orders";
     }
 }

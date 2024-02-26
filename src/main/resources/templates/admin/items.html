@@ -16,7 +16,7 @@
         <input type="submit" value="Change"/>
     </form>
     <br/>
-    <form th:method="DELETE" th:action="@{/admin/categories/{category}/{id}/delete(category=${category}, id=${item.getId()})}">
+    <form th:method="DELETE" th:action="@{/admin/categories/{category}/{id}(category=${category}, id=${item.getId()})}">
         <input type="submit" value="Delete">
     </form>
 </div>
